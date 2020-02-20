@@ -25,8 +25,8 @@
 const scaling = "fit"; // this will resize to fit inside the screen dimensions
 const width = 1024;
 const height = 768;
-const color = #000000; // ZIM colors like green, blue, pink, faint, clear, etc.
-const outerColor = #FFFFFF; // any HTML colors like "violet", "#333", etc. are fine to use
+const color = "#000000"; // ZIM colors like green, blue, pink, faint, clear, etc.
+const outerColor = "#FFFFFF"; // any HTML colors like "violet", "#333", etc. are fine to use
 
 const frame = new Frame(scaling, width, height, color, outerColor);
 frame.on("ready", () => { // ES6 Arrow Function - like function(){}
@@ -43,7 +43,7 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
     // put your code here (you can delete this sample code)
 
     // with chaining - can also assign to a variable for later access
-    new Circle(100, #111111)
+    new Circle(100, "#111111")
         .center()
         .drag();
 
