@@ -38,7 +38,7 @@ const width = 1024;
 const height = 768;
 const color = '#66ffff'; // ZIM colors like green, blue, pink, faint, clear, etc.
 const outerColor = dark; // any HTML colors like "violet", "#333", etc. are fine to use
-const assets = ['cactus1.png', 'cactus2.png', 'ground.png', 'skull1.png', 'skull2.png', 'bone1.png', 'bone2.png'];
+const assets = ['cactus1.png', 'cactus2.png', 'ground.png', 'skull1.png', 'skull2.png', 'bone1.png', 'bone2.png', 'background.png'];
 const path = 'assets/';
 
 // as of ZIM 5.5.0 you do not need to put zim before ZIM functions and classes
@@ -50,7 +50,18 @@ frame.on("ready", function() {
     let stageW = frame.width;
     let stageH = frame.height;
 
-    const background = new Rectangle(stageW, stageH, new GradientColor(['#0C446C','#23283C'], [0,1], 0,0, 0,500)).addTo();
+    // const background = new Rectangle(stageW, stageH, new GradientColor(['#0C446C','#23283C'], [0,1], 0,0, 0,500)).addTo();
+
+    // backgrund scroller
+    const background = asset("background.png").addTo();
+
+    const scroller = new Scroller({
+        backing:background,
+        speed:.1,
+        gapFix:1,
+        horizontal:true,
+        direction:1,
+    });
 
 
     const world = new Container().center();
@@ -71,33 +82,46 @@ frame.on("ready", function() {
         .addTo(world)
         .ord(top)
         .pos(0,15);
-    // var ground = frame.asset('ground.png').pos(100,100).centerReg(world).sca(.8).bot().ord(0);
 
-
-    const cactus1 = frame.asset('cactus1.png').pos(200,200).addTo(world).sca(.5).top().ord(3);
-    const cactus2 = frame.asset('cactus2.png').pos(400,300).addTo(world).sca(.5).top().ord(3);
-    const skull1 = frame.asset('skull1.png').pos(100,400).addTo(world).sca(.5).top().ord(3);
-    const skull2 = frame.asset('skull2.png').pos(500,400).addTo(world).sca(.5).top().ord(3);
-    const bone1 = frame.asset('bone1.png').pos(850,375).addTo(world).sca(.5).top().ord(3).rot(45);
-    const bone2 = frame.asset('bone2.png').pos(175,300).addTo(world).sca(.5).top().ord(3);
-
-
-    const bone3 = bone2.clone().pos(800,400).addTo(world).sca(.5).top().ord(1);
-    const cactus3 = cactus1.clone().pos(875,325).addTo(world).sca(-.5,.5).top().ord(3);
     // var holder = new Container();
     // var tiles = new Tile(new Rectangle(50,50,frame.yellow,frame.yellow,2).centerReg(), 8, 8)
     //     .rot(45)
     //     .center(holder)
     // holder.sca(2,1).center().mov(0,50);
 
-    const circle = new Circle(20,red).center().drag();
+
+
+    const cactus1 = frame.asset('cactus1.png').pos(0,250).addTo(world).sca(.4).top().ord(3);
+    const cactus2 = frame.asset('cactus2.png').pos(320,250).addTo(world).sca(.4).top().ord(3);
+    const skull1 = frame.asset('skull1.png').pos(80,320).addTo(world).sca(.5).top().ord(3);
+    const skull2 = frame.asset('skull2.png').pos(300,330).addTo(world).sca(.5).top().ord(3);
+    const bone1 = frame.asset('bone1.png').pos(120,350).addTo(world).sca(.4).top().ord(3).rot(60);
+    const bone2 = frame.asset('bone2.png').pos(420,400).addTo(world).sca(.4,-.4).top().ord(3);
+
+    const circle = new Circle(20,red).center().drag()  .wiggle("y", 0, 5, 5, 1000, 1005);
+
+    const ghost = new Container().center().ord(5);
+    const body = new Circle(30, black).centerReg(ghost)
+        .wiggle("y", 0, 5, 5, 10, 1005);
+
+    //
+    //     new Emitter({
+    //     obj:new Circle(30,'#ff3399'),
+    //     interval:1,
+    //     // sink:sink,
+    //     gravity:0,
+    //     force:2,
+    //     // angle:{min:+90+20, max:+90-20},
+    // }).addTo(circle).ord(-4);
+
+    // var ground = frame.asset('ground.png').pos(100,100).centerReg(world).sca(.8).bot().ord(0);
 
     // var label = new Label().center();
     // this maybe is for shaking - I think we need the other event deviceorientation
     frame.on("deviceorientation", e=>{
 
         // label.text = e.acceleration.x +","+ e.acceleration.y +","+ e.acceleration.z;
-        circle.loc(circle.x+e.acceleration.x*-10, circle.y+e.acceleration.y*2);
+        circle.loc(circle.x+e.rotation.x*-10, circle.y+e.rotation.y*2);
         if (circle.x > stageW) circle.x = stageW;
         if (circle.y > stageH) circle.y = stageH;
         if (circle.x < 0) circle.x = 0;
@@ -105,6 +129,20 @@ frame.on("ready", function() {
 
         stage.update();
     });
+
+      frame.on("resize", () => {
+        stageW = frame.width;
+        stageH = frame.height;
+
+        world.scaleTo(stage,90).center()
+
+
+            // var ground = frame.asset('ground.png').pos(100,100).centerReg(world).sca(.8).bot().ord(0);
+
+            // const bone3 = bone2.clone().pos(400,350).addTo(world).sca(.4).top().ord(1).rot(-40);
+            // const cactus3 = cactus1.clone().pos(475,260).addTo(world).sca(-.5,.5).top().ord(3);
+
+  });
 
     stage.update(); // this is needed to show any changes
 
