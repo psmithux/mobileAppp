@@ -93,7 +93,7 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
 
     var label = new Label().center();
     // this maybe is for shaking - I think we need the other event deviceorientation
-    frame.on("devicemotion", e=>{
+    frame.on("deviceorientation", e=>{
 
         label.text = e.acceleration.x +","+ e.acceleration.y +","+ e.acceleration.z;
         circle.loc(circle.x+e.acceleration.x*-10, circle.y+e.acceleration.y*2);
