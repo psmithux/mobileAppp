@@ -1,101 +1,52 @@
+
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8" />
-<title>ZIM - Code Creativity</title>
+<title>ZIM Accellerometer</title>
 
-<!-- Welcome to ZIM at https://zimjs.com - Code Creativity!                              -->
-<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS https://createjs.com -->
-<!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner   -->
-<!-- ZIM is free to use. You can donate to help improve ZIM at https://zimjs.com/donate  -->
+<!-- Welcome to ZIM at http://zimjs.com - Code Interactive Media Pizzazz!             -->
+<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS http://createjs.com -->
+<!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner     -->
+<!-- ZIM is free to use. You can donate to help improve ZIM at http://zimjs.com/donate     -->
 
 <script src="https://zimjs.org/cdn/1.3.0/createjs.js"></script>
 <script src="https://zimjs.org/cdn/10.9.0/zim.js"></script>
-
-
-<!-- import Box2D and ZIM Physics helper -->
-<script src="https://zimjs.org/cdn/Box2dWeb-2.1.a.3.min.js"></script>
-<script src="https://zimjs.org/cdn/physics_2.0.js"></script>
-
-<script src="https://zimjs.com/ten/header.js"></script>
-
 <!-- use zimjs.com/distill for minified individual functions! -->
 
 <script>
 
 // SCALING OPTIONS
 // scaling can have values as follows with full being the default
-// "fit"	sets canvas and stage to dimensions and scales to fit inside window size
-// "outside"	sets canvas and stage to dimensions and scales to fit outside window size
-// "full"	sets stage to window size with no scaling
-// "tagID"	add canvas to HTML tag of ID - set to dimensions if provided - no scaling
+// "fit"    sets canvas and stage to dimensions and scales to fit inside window size
+// "outside"    sets canvas and stage to dimensions and scales to fit outside window size
+// "full"    sets stage to window size with no scaling
+// "tagID"    add canvas to HTML tag of ID - set to dimensions if provided - no scaling
 
-const scaling = "full"; // this will resize to fit inside the screen dimensions
-const width = 1024;
-const height = 768;
-const color = '#66ffff'; // ZIM colors like green, blue, pink, faint, clear, etc.
-const outerColor = dark; // any HTML colors like "violet", "#333", etc. are fine to use
-const assets = ['cactus1.png', 'cactus2.png', 'ground.png'];
-const path = 'assets/';
+var scaling = "full"; // this will resize to fit inside the screen dimensions
+var width = 1024;
+var height = 768;
+var color = light;
+var outerColor = darker;
 
-
-const frame = new Frame(scaling, width, height, color, outerColor, assets, path);
-
-frame.on("ready", () => { // ES6 Arrow Function - like function(){}
+// as of ZIM 5.5.0 you do not need to put zim before ZIM functions and classes
+var frame = new Frame({scaling, width, height, color, outerColor, sensors:true});
+frame.on("ready", function() {
     zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
 
-    const stage = frame.stage;
-    let stageW = frame.width;
-    let stageH = frame.height;
-
-    // see https://zimjs.com/learn.html for video and code tutorials
-    // see https://zimjs.com/docs.html for documentation
-    // see https://zimjs.com/bits.html for 64 Interactive Media techniques
-
-    // put your code here (you can delete this sample code)
-
-    // with chaining - can also assign to a variable for later access
-
-    new Rectangle(stageW, stageH, new GradientColor(['#66ffff','#33ccff'], [0,1], 0,0, 0,500)).addTo();
-
-    var world = new Container().center();
-    // var ground = new Blob({
-    //     points: [[0.7,-66.3,0,0,-50,0,50,0,"mirror"],[178.6,1.8,0,0,0,-50,0,50,"mirror"],[3,69.6,0,0,50,0,-50,0,"mirror"],[-181.3,1.4,0,0,0,50,0,-50,"mirror"]],
-    //     color: '#ffff99',
-    //     interactive: false
-    //     })
-    //     .sca(3)
-    //     .addTo(world)
-    //     .ord(top);
-    var ground = frame.asset('ground.png').pos(100,100).centerReg(world).sca(.8).bot().ord(0);
-
-    var ghost = new Container().center().bot().ord(2);
-    var body = new Circle(30, black).centerReg(ghost)
-        .wiggle("y", 0, 5, 5, 1000, 1005);
-
-
-        new Emitter({
-        obj:new Circle(30,'#ff3399'),
-        interval:1,
-        // sink:sink,
-        gravity:0,
-        force:2,
-        // angle:{min:+90+20, max:+90-20},
-    }).addTo(ghost).ord(-1);
-
-    var cactus1 = frame.asset('cactus1.png').pos(100,100).addTo(world).sca(.5).top().ord(3);
-    var cactus2 = frame.asset('cactus2.png').pos(400,300).addTo(world).sca(.5).top().ord(3);
-
+    var stage = frame.stage;
+    var stageW = frame.width;
+    var stageH = frame.height;
 
     // https://zimjs.com/explore/accelerometer.html
 
-    // var circle = new Circle().center();
+    var circle = new Circle().center();
 
-    var label = new Label().center();
+    // var label = new Label().center();
     // this maybe is for shaking - I think we need the other event deviceorientation
-    frame.on("deviceorientation", e=>{
+    frame.on("devicemotion", e=>{
 
-        label.text = e.acceleration.x +","+ e.acceleration.y +","+ e.acceleration.z;
+        // label.text = e.acceleration.x +","+ e.acceleration.y +","+ e.acceleration.z;
         circle.loc(circle.x+e.acceleration.x*-10, circle.y+e.acceleration.y*2);
         if (circle.x > stageW) circle.x = stageW;
         if (circle.y > stageH) circle.y = stageH;
