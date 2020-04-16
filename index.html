@@ -33,7 +33,7 @@
 // "full"    sets stage to window size with no scaling
 // "tagID"    add canvas to HTML tag of ID - set to dimensions if provided - no scaling
 
-const scaling = "fit"; // this will resize to fit inside the screen dimensions
+const scaling = "full"; // this will resize to fit inside the screen dimensions
 const width = 1024;
 const height = 768;
 const color = '#66ffff'; // ZIM colors like green, blue, pink, faint, clear, etc.
@@ -50,15 +50,27 @@ frame.on("ready", function() {
     let stageW = frame.width;
     let stageH = frame.height;
 
+    const background = new Rectangle(stageW, stageH, new GradientColor(['#0C446C','#23283C'], [0,1], 0,0, 0,500)).addTo();
+
+
     const world = new Container().center();
     const ground = new Blob({
         points: [[0.7,-66.3,0,0,-50,0,50,0,"mirror"],[178.6,1.8,0,0,0,-50,0,50,"mirror"],[3,69.6,0,0,50,0,-50,0,"mirror"],[-181.3,1.4,0,0,0,50,0,-50,"mirror"]],
         color: '#ffff99',
         interactive: false
         })
-        .sca(3,2)
+        .sca(1.5,1)
         .addTo(world)
         .ord(top);
+    const ground1 = new Blob({
+        points: [[0.7,-66.3,0,0,-50,0,50,0,"mirror"],[178.6,1.8,0,0,0,-50,0,50,"mirror"],[3,69.6,0,0,50,0,-50,0,"mirror"],[-181.3,1.4,0,0,0,50,0,-50,"mirror"]],
+        color: '#F7A36F',
+        interactive: false
+        })
+        .sca(1.5,1)
+        .addTo(world)
+        .ord(top)
+        .pos(0,15);
     // var ground = frame.asset('ground.png').pos(100,100).centerReg(world).sca(.8).bot().ord(0);
 
 
@@ -66,9 +78,12 @@ frame.on("ready", function() {
     const cactus2 = frame.asset('cactus2.png').pos(400,300).addTo(world).sca(.5).top().ord(3);
     const skull1 = frame.asset('skull1.png').pos(100,400).addTo(world).sca(.5).top().ord(3);
     const skull2 = frame.asset('skull2.png').pos(500,400).addTo(world).sca(.5).top().ord(3);
-    const bone1 = frame.asset('bone1.png').pos(750,350).addTo(world).sca(.5).top().ord(3);
-    const bone2 = frame.asset('bone2.png').pos(500,250).addTo(world).sca(.5).top().ord(3);
+    const bone1 = frame.asset('bone1.png').pos(850,375).addTo(world).sca(.5).top().ord(3).rot(45);
+    const bone2 = frame.asset('bone2.png').pos(175,300).addTo(world).sca(.5).top().ord(3);
 
+
+    const bone3 = bone2.clone().pos(800,400).addTo(world).sca(.5).top().ord(1);
+    const cactus3 = cactus1.clone().pos(875,325).addTo(world).sca(-.5,.5).top().ord(3);
     // var holder = new Container();
     // var tiles = new Tile(new Rectangle(50,50,frame.yellow,frame.yellow,2).centerReg(), 8, 8)
     //     .rot(45)
@@ -79,7 +94,7 @@ frame.on("ready", function() {
 
     // var label = new Label().center();
     // this maybe is for shaking - I think we need the other event deviceorientation
-    frame.on("devicemotion", e=>{
+    frame.on("deviceorientation", e=>{
 
         // label.text = e.acceleration.x +","+ e.acceleration.y +","+ e.acceleration.z;
         circle.loc(circle.x+e.acceleration.x*-10, circle.y+e.acceleration.y*2);
