@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>ZIM Accellerometer</title>
+<title>Pad's Game</title>
 
 <!-- Welcome to ZIM at http://zimjs.com - Code Interactive Media Pizzazz!             -->
 <!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS http://createjs.com -->
@@ -14,6 +14,16 @@
 <script src="https://zimjs.org/cdn/10.9.0/zim.js"></script>
 <!-- use zimjs.com/distill for minified individual functions! -->
 
+
+<!-- import Box2D and ZIM Physics helper -->
+<script src="https://zimjs.org/cdn/Box2dWeb-2.1.a.3.min.js"></script>
+<script src="https://zimjs.org/cdn/physics_2.0.js"></script>
+
+<script src="https://zimjs.com/ten/header.js"></script>
+
+<!-- use zimjs.com/distill for minified individual functions! -->
+
+
 <script>
 
 // SCALING OPTIONS
@@ -23,24 +33,49 @@
 // "full"    sets stage to window size with no scaling
 // "tagID"    add canvas to HTML tag of ID - set to dimensions if provided - no scaling
 
-var scaling = "full"; // this will resize to fit inside the screen dimensions
-var width = 1024;
-var height = 768;
-var color = light;
-var outerColor = darker;
+const scaling = "fit"; // this will resize to fit inside the screen dimensions
+const width = 1024;
+const height = 768;
+const color = '#66ffff'; // ZIM colors like green, blue, pink, faint, clear, etc.
+const outerColor = dark; // any HTML colors like "violet", "#333", etc. are fine to use
+const assets = ['cactus1.png', 'cactus2.png', 'ground.png', 'skull1.png', 'skull2.png', 'bone1.png', 'bone2.png'];
+const path = 'assets/';
 
 // as of ZIM 5.5.0 you do not need to put zim before ZIM functions and classes
-var frame = new Frame({scaling, width, height, color, outerColor, sensors:true});
+const frame = new Frame({scaling, width, height, color, outerColor, assets, path, sensors:true});
 frame.on("ready", function() {
     zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
 
-    var stage = frame.stage;
-    var stageW = frame.width;
-    var stageH = frame.height;
+    const stage = frame.stage;
+    let stageW = frame.width;
+    let stageH = frame.height;
 
-    // https://zimjs.com/explore/accelerometer.html
+    const world = new Container().center();
+    const ground = new Blob({
+        points: [[0.7,-66.3,0,0,-50,0,50,0,"mirror"],[178.6,1.8,0,0,0,-50,0,50,"mirror"],[3,69.6,0,0,50,0,-50,0,"mirror"],[-181.3,1.4,0,0,0,50,0,-50,"mirror"]],
+        color: '#ffff99',
+        interactive: false
+        })
+        .sca(3,2)
+        .addTo(world)
+        .ord(top);
+    // var ground = frame.asset('ground.png').pos(100,100).centerReg(world).sca(.8).bot().ord(0);
 
-    var circle = new Circle().center();
+
+    const cactus1 = frame.asset('cactus1.png').pos(200,200).addTo(world).sca(.5).top().ord(3);
+    const cactus2 = frame.asset('cactus2.png').pos(400,300).addTo(world).sca(.5).top().ord(3);
+    const skull1 = frame.asset('skull1.png').pos(100,400).addTo(world).sca(.5).top().ord(3);
+    const skull2 = frame.asset('skull2.png').pos(500,400).addTo(world).sca(.5).top().ord(3);
+    const bone1 = frame.asset('bone1.png').pos(750,350).addTo(world).sca(.5).top().ord(3);
+    const bone2 = frame.asset('bone2.png').pos(500,250).addTo(world).sca(.5).top().ord(3);
+
+    // var holder = new Container();
+    // var tiles = new Tile(new Rectangle(50,50,frame.yellow,frame.yellow,2).centerReg(), 8, 8)
+    //     .rot(45)
+    //     .center(holder)
+    // holder.sca(2,1).center().mov(0,50);
+
+    const circle = new Circle(20,red).center().drag();
 
     // var label = new Label().center();
     // this maybe is for shaking - I think we need the other event deviceorientation
