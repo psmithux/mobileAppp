@@ -68,14 +68,14 @@ frame.on("ready", function() {
     const cactus2 = frame.asset('cactus2.png').pos(320,150).addTo(world).sca(.4).top().ord(3);
     const skull1 = frame.asset('skull1.png').pos(100,400).addTo(world).sca(.5).top().ord(3);
     const skull2 = frame.asset('skull4.png').pos(300,200).addTo(world).sca(-.5,.5).top().ord(3);
-    const bone1 = frame.asset('bone1.png').pos(220,350).addTo(world).sca(.4).top().ord(3).rot(60);
+    const bone1 = frame.asset('bone1.png').pos(220,450).addTo(world).sca(.4).top().ord(3).rot(60);
     const bone2 = frame.asset('bone2.png').pos(400,300).addTo(world).sca(.4,-.4).top().ord(3);
 
-     var c = new Circle(20, red).center().drag();
+     var c = new Circle(20, red).center();
      // var label = new Label().center().sca(.5).mov(0,100);
      frame.on("deviceorientation", function (e) {
          // label.text = "x:" + Math.round(e.rotation.x) +", y: "+  Math.round(e.rotation.y) +", z: "+  Math.round(e.rotation.z);
-         c.loc(stageW/2+e.rotation.x*2, stageH/2+e.rotation.y*-2);
+         c.loc(stageH/2+e.rotation.y*-2,stageW/2+e.rotation.x*2);
          stage.update();
      });
 
@@ -88,6 +88,7 @@ frame.on("ready", function() {
      Ticker.add(function(){
        if(c.hitTestBounds(crown)){
          crown.removeFrom();
+         scorer.score+=500;
        }
      });
 
@@ -147,6 +148,12 @@ frame.on("ready", function() {
     restart.tap(function(){
       location.reload();
     });
+
+    // const scorer = new Scorer({
+    //     backgroundColor:green,
+    //     color:white,
+    //     align:"left"
+    // }).addTo().pos(0,0);
 
     frame.on("resize", () => {
       stageW = frame.width;
