@@ -38,7 +38,7 @@ const width = 1024;
 const height = 768;
 const color = '#66ffff'; // ZIM colors like green, blue, pink, faint, clear, etc.
 const outerColor = dark; // any HTML colors like "violet", "#333", etc. are fine to use
-const assets = ['cactus1.png', 'cactus2.png', 'ground.png', 'skull1.png', 'skull2.png', 'skull4.png', 'bone1.png', 'bone2.png', 'background.png', 'coin1.png', 'coin2.png', 'crown.png', 'money.png', 'necklace.png'];
+const assets = ['cactus1.png', 'cactus2.png', 'ground.png', 'skull1.png', 'skull2.png', 'skull4.png', 'bone1.png', 'bone2.png', 'background.png', 'coin1.png', 'coin2.png', 'coin3.png', 'coin4.png', 'coin5.png', 'crown.png', 'money.png', 'necklace.png'];
 const path = 'assets/';
 
 // as of ZIM 5.5.0 you do not need to put zim before ZIM functions and classes
@@ -55,13 +55,13 @@ frame.on("ready", function() {
     const world = new Container().center();
 
     // const coin1 = frame.asset('coin1.png').pos(100,50).addTo(world).sca(.2).top().ord(3);
-    const coin2 = frame.asset('coin2.png').pos(0,50).addTo(world).sca(.2).top().ord(3);
+    const coin1 = frame.asset('coin1.png').pos(0,0).addTo(world).sca(.2).top().ord(3);
     const crown = frame.asset('crown.png').pos(300,250).addTo(world).sca(.6).top().ord(3);
     const money = frame.asset('money.png').pos(0,450).addTo(world).sca(.2).top().ord(3);
-    const coin3 = coin2.clone().pos(100,50).addTo(world).sca(.2).top().ord(3);
-    const coin4 = coin2.clone().pos(200,50).addTo(world).sca(.2).top().ord(3);
-    const coin5 = coin2.clone().pos(300,50).addTo(world).sca(.2).top().ord(3);
-    const coin6 = coin2.clone().pos(400,50).addTo(world).sca(.2).top().ord(3);
+    const coin2 = frame.asset('coin2.png').pos(100,0).addTo(world).sca(.2).top().ord(3);
+    const coin3 = frame.asset('coin3.png').pos(200,0).addTo(world).sca(.2).top().ord(3);
+    const coin4 = frame.asset('coin4.png').pos(300,0).addTo(world).sca(.2).top().ord(3);
+    const coin5 = frame.asset('coin5.png').pos(400,0).addTo(world).sca(.2).top().ord(3);
     const necklace = frame.asset('necklace.png').pos(400,450).addTo(world).sca(.5).top().ord(3);
 
     const cactus1 = frame.asset('cactus1.png').pos(0,250).addTo(world).sca(.4).top().ord(3);
@@ -79,10 +79,10 @@ frame.on("ready", function() {
 
     // var c = new Circle(20, red).center().drag().wiggle("y", 0, 5, 5, 1000, 1005);
        var c = new Circle(20, red).center().drag();
-       var label = new Label().center().sca(.5).mov(0,100);
+       // var label = new Label().center().sca(.5).mov(0,100);
        frame.on("deviceorientation", function (e) {
            label.text = "x:" + Math.round(e.rotation.x) +", y: "+  Math.round(e.rotation.y) +", z: "+  Math.round(e.rotation.z);
-           c.loc(stageW/2+e.rotation.x*2, stageH/2+e.rotation.y*2);
+           c.loc(stageW/-2+e.rotation.x*-2, stageH/2+e.rotation.y*-2);
            stage.update();
        });
 
@@ -92,26 +92,53 @@ frame.on("ready", function() {
          };
        }, true);
 
-       Ticker.add(function(){
+      Ticker.add(function(){
          if(c.hitTestBounds(crown)){
            crown.removeFrom();
-         } else if (c.hitTestBounds(money)){
-           money.removeFrom();
-         } else if (c.hitTestBounds(necklace)){
-           necklace.removeFrom();
-         } else if(c.hitTestBounds(coin1)){
-           coin1.removeFrom();
-         } else if(c.hitTestBounds(coin2)){
-           coin2.removeFrom();
-         } else if(c.hitTestBounds(coin3)){
-           coin3.removeFrom();
-         } else if(c.hitTestBounds(coin4)){
-           coin4.removeFrom();
-         } else if (c.hitTestBounds(coin5)){
-           coin5.removeFrom();
          }
-       }, true);
+       });
 
+       Ticker.add(function(){
+         if(c.hitTestBounds(money)){
+             money.removeFrom();
+         }
+       });
+
+       Ticker.add(function(){
+         if(c.hitTestBounds(necklace)){
+             necklace.removeFrom();
+         }
+       });
+
+       Ticker.add(function(){
+         if(c.hitTestBounds(coin1)){
+             coin1.removeFrom();
+         }
+       });
+
+       Ticker.add(function(){
+         if(c.hitTestBounds(coin2)){
+             coin2.removeFrom();
+         }
+       });
+
+       Ticker.add(function(){
+         if(c.hitTestBounds(coin3)){
+             coin3.removeFrom();
+         }
+       });
+
+       Ticker.add(function(){
+         if(c.hitTestBounds(coin4)){
+             coin4.removeFrom();
+         }
+       });
+
+       Ticker.add(function(){
+         if(c.hitTestBounds(coin5)){
+             coin5.removeFrom();
+         }
+       });
 
       stage.update(); // this is needed to show any changes
 
