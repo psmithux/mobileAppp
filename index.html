@@ -75,7 +75,7 @@ frame.on("ready", function() {
      // var label = new Label().center().sca(.5).mov(0,100);
      frame.on("deviceorientation", function (e) {
          // label.text = "x:" + Math.round(e.rotation.x) +", y: "+  Math.round(e.rotation.y) +", z: "+  Math.round(e.rotation.z);
-         c.loc(stageW/2+e.rotation.x*2, stageH/2+e.rotation.y*-2);
+         c.loc(stageH/2+e.rotation.x*2, stageW/2+e.rotation.y*-2);
          stage.update();
      });
 
@@ -135,11 +135,18 @@ frame.on("ready", function() {
 
     stage.update(); // this is needed to show any changes
 
-    const restart = new Button().addTo().loc(0,0).sca(.5);
-    restart("onClick", function(){
-      c.center();
-      stage.update();
+    const restart = new Button({backgroundColor: red,
+      rollBackgroundColor: red,
+      label: "RESTART",
+      color: white
     })
+      .sca(.8)
+      .addTo()
+      .loc(10,10);
+
+    restart.tap(function(){
+      location.reload();
+    });
 
     frame.on("resize", () => {
       stageW = frame.width;
