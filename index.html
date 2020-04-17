@@ -71,82 +71,81 @@ frame.on("ready", function() {
     const bone1 = frame.asset('bone1.png').pos(220,350).addTo(world).sca(.4).top().ord(3).rot(60);
     const bone2 = frame.asset('bone2.png').pos(400,300).addTo(world).sca(.4,-.4).top().ord(3);
 
-    // const circle = new Circle(10,red).center().drag()  .wiggle("y", 0, 5, 5, 1000, 1005);
+     var c = new Circle(20, red).center().drag();
+     // var label = new Label().center().sca(.5).mov(0,100);
+     frame.on("deviceorientation", function (e) {
+         // label.text = "x:" + Math.round(e.rotation.x) +", y: "+  Math.round(e.rotation.y) +", z: "+  Math.round(e.rotation.z);
+         c.loc(stageW/2+e.rotation.x*2, stageH/2+e.rotation.y*-2);
+         stage.update();
+     });
 
-    // const ghost = new Container().center().ord(5);
+     Ticker.add(function(){
+       if(c.hitTestBounds(cactus1) || c.hitTestBounds(cactus2) || c.hitTestBounds(skull1) || c.hitTestBounds(skull2) || c.hitTestBounds(bone1) || c.hitTestBounds(bone2)){
+         c.removeFrom();
+       };
+     }, true);
 
-    // var label = new Label().center();
+     Ticker.add(function(){
+       if(c.hitTestBounds(crown)){
+         crown.removeFrom();
+       }
+     });
 
-    // var c = new Circle(20, red).center().drag().wiggle("y", 0, 5, 5, 1000, 1005);
-       var c = new Circle(20, red).center().drag();
-       // var label = new Label().center().sca(.5).mov(0,100);
-       frame.on("deviceorientation", function (e) {
-           label.text = "x:" + Math.round(e.rotation.x) +", y: "+  Math.round(e.rotation.y) +", z: "+  Math.round(e.rotation.z);
-           c.loc(stageW/-2+e.rotation.x*-2, stageH/2+e.rotation.y*-2);
-           stage.update();
-       });
+     Ticker.add(function(){
+       if(c.hitTestBounds(money)){
+           money.removeFrom();
+       }
+     });
 
-       Ticker.add(function(){
-         if(c.hitTestBounds(cactus1) || c.hitTestBounds(cactus2) || c.hitTestBounds(skull1) || c.hitTestBounds(skull2) || c.hitTestBounds(bone1) || c.hitTestBounds(bone2)){
-           c.removeFrom();
-         };
-       }, true);
+     Ticker.add(function(){
+       if(c.hitTestBounds(necklace)){
+           necklace.removeFrom();
+       }
+     });
 
-      Ticker.add(function(){
-         if(c.hitTestBounds(crown)){
-           crown.removeFrom();
-         }
-       });
+     Ticker.add(function(){
+       if(c.hitTestBounds(coin1)){
+           coin1.removeFrom();
+       }
+     });
 
-       Ticker.add(function(){
-         if(c.hitTestBounds(money)){
-             money.removeFrom();
-         }
-       });
+     Ticker.add(function(){
+       if(c.hitTestBounds(coin2)){
+           coin2.removeFrom();
+       }
+     });
 
-       Ticker.add(function(){
-         if(c.hitTestBounds(necklace)){
-             necklace.removeFrom();
-         }
-       });
+     Ticker.add(function(){
+       if(c.hitTestBounds(coin3)){
+           coin3.removeFrom();
+       }
+     });
 
-       Ticker.add(function(){
-         if(c.hitTestBounds(coin1)){
-             coin1.removeFrom();
-         }
-       });
+     Ticker.add(function(){
+       if(c.hitTestBounds(coin4)){
+           coin4.removeFrom();
+       }
+     });
 
-       Ticker.add(function(){
-         if(c.hitTestBounds(coin2)){
-             coin2.removeFrom();
-         }
-       });
+     Ticker.add(function(){
+       if(c.hitTestBounds(coin5)){
+           coin5.removeFrom();
+       }
+     });
 
-       Ticker.add(function(){
-         if(c.hitTestBounds(coin3)){
-             coin3.removeFrom();
-         }
-       });
+    stage.update(); // this is needed to show any changes
 
-       Ticker.add(function(){
-         if(c.hitTestBounds(coin4)){
-             coin4.removeFrom();
-         }
-       });
+    const restart = new Button().addTo().loc(0,0).sca(.5);
+    restart("onClick", function(){
+      c.center();
+      stage.update();
+    })
 
-       Ticker.add(function(){
-         if(c.hitTestBounds(coin5)){
-             coin5.removeFrom();
-         }
-       });
+    frame.on("resize", () => {
+      stageW = frame.width;
+      stageH = frame.height;
 
-      stage.update(); // this is needed to show any changes
-
-      frame.on("resize", () => {
-        stageW = frame.width;
-        stageH = frame.height;
-
-        world.scaleTo(stage, 90).centerReg().pos(0,stageH*.2,CENTER,BOTTOM);
+      world.scaleTo(stage, 90).centerReg().pos(0,stageH*.2,CENTER,BOTTOM);
 
   });
 
