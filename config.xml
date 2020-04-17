@@ -5,14 +5,14 @@
         id        = "com.sheridan.imm.collective"
         version   = "3.0.1">
 
-    <name>Touchy</name>
+    <name>Pad's App</name>
 
     <description>
         Mobile game to touch a target on your opponent's screen.
     </description>
 
-    <author href="http://danzen.com" email="support@danzen.com">
-       Dan Zen
+    <author href="https://www.padminismith.com" email="p.smith.ux@gmail.com">
+       Padmini Smith
     </author>
 
     <!--
