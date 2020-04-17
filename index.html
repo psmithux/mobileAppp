@@ -75,7 +75,7 @@ frame.on("ready", function() {
      // var label = new Label().center().sca(.5).mov(0,100);
      frame.on("deviceorientation", function (e) {
          // label.text = "x:" + Math.round(e.rotation.x) +", y: "+  Math.round(e.rotation.y) +", z: "+  Math.round(e.rotation.z);
-         c.loc(stageH/2+e.rotation.y*-2,stageW/2+e.rotation.x*2);
+         c.loc(stageH/2+e.rotation.y*2,stageW/2+e.rotation.x*-2);
          stage.update();
      });
 
