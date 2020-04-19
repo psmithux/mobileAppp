@@ -90,11 +90,10 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
         color: '#ffff99',
         interactive: false
         })
-        // .sca(3)
+        .sca(6)
         .addTo(world)
-        .pos(0,300,CENTER,BOTTOM)
-        .ord(top)
-        .sca(4);
+        .pos(100,-300,CENTER,BOTTOM)
+        .ord(top);
 
     new Blob({
         points: [[163.9,-99.2,0,0,-22.4,0,50,0,"mirror"],[186.8,121.5,0,0,0,-50,0,50,"mirror"],[-160.6,150.6,0,0,50,0,-50,0,"mirror"],[-183.9,-71.1,0,0,0,50,0,-27.6,"mirror"],[2,-73.3,0,0,-89.8,-0.5,72.7,0.4]],
@@ -107,22 +106,22 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
         .ord(top)
         .sca(3);
 
-    const topbar = new Rectangle(stageW+200, 100, red).loc(0,-500, world);
-    const coin1 = asset('coin1.png').loc(0,50,world).sca(.2);
-    const crown = asset('crown.png').loc(300,450,world).sca(.6);
-    const money = asset('money.png').loc(10,550,world).sca(.2);
-    const coin2 = coin1.clone().loc(100,50,world).sca(.2);
-    const coin3 = coin1.clone().loc(200,50,world).sca(.2);
-    const coin4 = coin1.clone().loc(300,50,world).sca(.2);
-    const coin5 = coin1.clone().loc(400,50,world).sca(.2);
-    const necklace = asset('necklace.png').loc(400,600,world).sca(.5);
-    const cactus1 = asset('cactus1.png').loc(10,350,world).sca(.4);
-    const cactus2 = asset('cactus2.png').loc(320,300,world).sca(.4);
-    const cactus3 = cactus1.clone().loc(120,200,world).sca(-.2,.2);
-    const skull1 = asset('skull1.png').loc(100,500,world).sca(.5);
-    const skull2 = asset('skull4.png').loc(300,400,world).sca(-.5,.5);
-    const bone1 = asset('bone1.png').loc(220,500,world).sca(.4).rot(60);
-    const bone2 = asset('bone2.png').loc(350,550,world).sca(.4,-.4);
+    const topbar = new Rectangle(stageW, 60, red).loc(0,0, page2);
+    const coin1 = asset('coin1.png').loc(-400,-1050,world).sca(.5);
+    const crown = asset('crown.png').loc(250,-100,world).sca(2);
+    const money = asset('money.png').loc(-510,450,world);
+    const coin2 = coin1.clone().loc(-200,-1050,world).sca(.5);
+    const coin3 = coin1.clone().loc(0,-1050,world).sca(.5);
+    const coin4 = coin1.clone().loc(200,-1050,world).sca(.5);
+    const coin5 = coin1.clone().loc(400,-1050,world).sca(.5);
+    const necklace = asset('necklace.png').loc(500,500,world).sca(2);
+    const cactus1 = asset('cactus1.png').loc(-410,-200,world).sca(2);
+    const cactus2 = asset('cactus2.png').loc(340,-300,world).sca(1.5);
+    const cactus3 = cactus1.clone().loc(-120,-800,world).sca(-.7,.7);
+    const skull1 = asset('skull1.png').loc(-210,300,world).sca(1.8);
+    const skull2 = asset('skull4.png').loc(600,0,world).sca(-2,2);
+    const bone1 = asset('bone1.png').loc(320,500,world).rot(60);
+    const bone2 = asset('bone2.png').loc(450,250,world).sca(1,-1);
 
     var c = new Circle(15, black).center(page2).drag();
 
@@ -177,7 +176,7 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
       color: white
     })
       .sca(.5)
-      .loc(400,-380, world);
+      .loc(10,80, page2);
 
     restart.tap(function(){
       location.reload();
@@ -188,47 +187,31 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
         text: "Score:",
         lineHeight: 50,
         align: "center",
-        size: 30,
+        size: 20,
         color: white,
-    }).loc(90,40, topbar);
+    }).loc(60,0, topbar);
 
     const scorer = new Scorer({
         backgroundColor:red,
         color:white,
         align:"left",
-    }).loc(200,70, topbar);
+    }).loc(160,30, topbar);
 
 const page3 = new Rectangle(stageW, stageH, "black");
 
 new Label({
-    text: "Instructions",
+  text: "How to Play! \n Move the ghost by tilting your phone \n Pick up the treasure to get points \n But don't touch the cactus or bones!",
     lineHeight: 50,
     align: "center",
-    size: 30,
+    size: 20,
     color: white,
-}).loc(90,40, page3);
+}).loc(200,200, page3);
 
     const pages = new Pages([
       {page:page1, swipe:[page1,page2,null,null]},
       {page:page2, swipe:[page3,page2,page3,null]},
       {page:page3, swipe:[page2,page3,page2,null]}
     ], "slide", 700).addTo();
-
-    pages.on("help", () => {
-        if (pages.page == page2) {
-            const helpback = new Rectangle(stageW,stageH, black).center();
-            new Label({
-                text: "Instructions",
-                lineHeight: 50,
-                align: "center",
-                size: 30,
-                color: white,
-            }).loc(90,40, helpback);
-            zogg("helping");
-        } else {
-            zogr("helping");
-        }
-    });
 
     frame.on("resize", () => {
         stageW = frame.width;
