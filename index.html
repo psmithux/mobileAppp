@@ -51,7 +51,7 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
     const page1 = new Container(stageW,stageH);
     page1.backing = new Rectangle(page1.width, page1.height, dark).addTo(page1);
 
-    // Score
+
     new Label({
         text: "Play Game",
         lineHeight: 50,
@@ -198,13 +198,32 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
         align:"left",
     }).loc(200,70, topbar);
 
+const page3 = new Rectangle(stageW, stageH, "black");
+
+new Label({
+    text: "Instructions",
+    lineHeight: 50,
+    align: "center",
+    size: 30,
+    color: white,
+}).loc(90,40, page3);
+
     const pages = new Pages([
-        {page:page1, swipe:[page2, page2, "help", "help"]},
-        {page:page2, swipe:[page1, page1, "help", "help"]}
+      {page:page1, swipe:[page1,page2,null,null]},
+      {page:page2, swipe:[page3,page2,page3,null]},
+      {page:page3, swipe:[page2,page3,page2,null]}
     ], "slide", 700).addTo();
 
     pages.on("help", () => {
         if (pages.page == page2) {
+            const helpback = new Rectangle(stageW,stageH, black).center();
+            new Label({
+                text: "Instructions",
+                lineHeight: 50,
+                align: "center",
+                size: 30,
+                color: white,
+            }).loc(90,40, helpback);
             zogg("helping");
         } else {
             zogr("helping");
@@ -225,7 +244,7 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
         // page2.triangle.center();
 
         world.scaleTo(stage, 90, 90).centerReg().pos(0,0,CENTER,BOTTOM);
-        backing.siz(stageW,stageH).pos(0,0,TOP,LEFT);
+        // backing.siz(stageW,stageH).pos(0,0,TOP,LEFT);
 
         pages.resize();
     })
