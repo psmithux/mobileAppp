@@ -139,7 +139,7 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
         stage.update();
     });
 
-    const win = new Rectangle(stageW,stageH, "none").center(world).alp(0);
+    const win = new Rectangle(stageW,stageH, clear).center(world).alp(0);
 
     new Label({
       text: "You Win!",
@@ -151,14 +151,16 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
     }).loc(200,100, win);
 
 
-    Ticker.add(function(){
-      if (scorer.score == 10000){
-        zog("you win");
-        win.alp(1);
-    }
-  }, true);
+  //   Ticker.add(function(){
+  //     if (scorer.score == 10000){
+  //       zog("you win");
+  //       c.removeFrom();
+  //       Ticker.remove(ticker);
+  //       win.alp(1);
+  //   }
+  // }, true);
 
-    Ticker.add(function(){
+    const ticker = Ticker.add(function(){
       if(cactus1.hitTestCircle(c) || cactus2.hitTestCircle(c) || skull1.hitTestCircle(c) || skull2.hitTestCircle(c) || bone1.hitTestCircle(c) || bone2.hitTestCircle(c) || cactus3.hitTestCircle(c)){
         c.removeFrom();
       };
@@ -214,6 +216,14 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
           tequila.removeFrom();
           scorer.score+=1000;
       }
+      if (scorer.score == 10000){
+        zog("you win");
+        win.alp(1);
+        c.removeFrom();
+        // win.alp(1);
+        Ticker.remove(ticker);
+        stage.update();
+    }
     });
 
     const restart = new Button({
