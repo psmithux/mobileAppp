@@ -14,6 +14,7 @@
 <script src="https://zimjs.org/cdn/Box2dWeb-2.1.a.3.min.js"></script>
 <script src="https://zimjs.org/cdn/physics_2.0.js"></script>
 <script src="https://zimjs.com/ten/header.js"></script>
+<script src="https://zimjs.org/cdn/game_2.2.js"></script>
 <!-- use zimjs.com/distill for minified individual functions! -->
 <script>
 // SCALING OPTIONS
@@ -37,9 +38,9 @@ frame.on("ready", function() {
     let stageW = frame.width;
     let stageH = frame.height;
 
-    const world = new Container(stageW,stageH).center();
+    const backing = new Rectangle(stageW, stageH, new GradientColor(['#00EBFF','#FFFFFF'], [0,1], 0,0, 0,500)).addTo();
 
-    new Rectangle(stageW, stageH, new GradientColor(['#00EBFF','#FFFFFF'], [0,1], 0,0, 0,500)).addTo().loc(0,0).bot();
+    const world = new Container(stageW,stageH).center();
 
     var ground = new Blob({
         points: [[163.9,-99.2,0,0,-22.4,0,50,0,"mirror"],[186.8,121.5,0,0,0,-50,0,50,"mirror"],[-160.6,150.6,0,0,50,0,-50,0,"mirror"],[-183.9,-71.1,0,0,0,50,0,-27.6,"mirror"],[2,-73.3,0,0,-89.8,-0.5,72.7,0.4]],
@@ -52,41 +53,120 @@ frame.on("ready", function() {
         .ord(top)
         .sca(2);
 
-        new Blob({
-            points: [[163.9,-99.2,0,0,-22.4,0,50,0,"mirror"],[186.8,121.5,0,0,0,-50,0,50,"mirror"],[-160.6,150.6,0,0,50,0,-50,0,"mirror"],[-183.9,-71.1,0,0,0,50,0,-27.6,"mirror"],[2,-73.3,0,0,-89.8,-0.5,72.7,0.4]],
-            color: '#FACC71',
-            interactive: false
-            })
-            // .sca(3)
-            .addTo(ground)
-            .pos(0,0,CENTER,BOTTOM)
-            .ord(top)
-            .sca(2);
+    new Blob({
+        points: [[163.9,-99.2,0,0,-22.4,0,50,0,"mirror"],[186.8,121.5,0,0,0,-50,0,50,"mirror"],[-160.6,150.6,0,0,50,0,-50,0,"mirror"],[-183.9,-71.1,0,0,0,50,0,-27.6,"mirror"],[2,-73.3,0,0,-89.8,-0.5,72.7,0.4]],
+        color: '#FACC71',
+        interactive: false
+        })
+        // .sca(3)
+        .addTo(ground)
+        .pos(0,0,CENTER,BOTTOM)
+        .ord(top)
+        .sca(2);
 
-        const coin1 = frame.asset('coin1.png').pos(50,100).addTo(world).sca(.2).top().ord(3);
-        const coin2 = frame.asset('coin2.png').pos(150,100).addTo(world).sca(.2).top().ord(3);
-        const coin3 = frame.asset('coin3.png').pos(250,100).addTo(world).sca(.2).top().ord(3);
-        const coin4 = frame.asset('coin4.png').pos(100,100).addTo(world).sca(.2).top().ord(3);
-        const coin5 = frame.asset('coin5.png').pos(200,100).addTo(world).sca(.2).top().ord(3);
-        const necklace = frame.asset('necklace.png').pos(300,450).addTo(world).sca(.5).top().ord(3);
-        const crown = frame.asset('crown.png').pos(100,650).addTo(world).sca(.6).top().ord(3);
-        const money = frame.asset('money.png').pos(100,250).addTo(world).sca(.2).top().ord(3);
+    const topbar = new Rectangle(stageW+200, 100, red).loc(-50,-100, world);
+    const coin1 = asset('coin1.png').loc(0,50,world).sca(.2);
+    const crown = asset('crown.png').loc(300,450,world).sca(.6);
+    const money = asset('money.png').loc(10,550,world).sca(.2);
+    const coin2 = coin1.clone().loc(100,50,world).sca(.2);
+    const coin3 = coin1.clone().loc(200,50,world).sca(.2);
+    const coin4 = coin1.clone().loc(300,50,world).sca(.2);
+    const coin5 = coin1.clone().loc(400,50,world).sca(.2);
+    const necklace = asset('necklace.png').loc(400,600,world).sca(.5);
+    const cactus1 = asset('cactus1.png').loc(10,350,world).sca(.4);
+    const cactus2 = asset('cactus2.png').loc(320,300,world).sca(.4);
+    const cactus3 = cactus1.clone().loc(120,200,world).sca(-.2,.2);
+    const skull1 = asset('skull1.png').loc(100,500,world).sca(.5);
+    const skull2 = asset('skull4.png').loc(300,400,world).sca(-.5,.5);
+    const bone1 = asset('bone1.png').loc(220,500,world).sca(.4).rot(60);
+    const bone2 = asset('bone2.png').loc(350,550,world).sca(.4,-.4);
 
+    // const scorer = new Scorer({
+    //     backgroundColor:green,
+    //     color:white,
+    //     align:"left"
+    // })..addTo();
 
-        const cactus1 = frame.asset('cactus1.png').pos(30,350).addTo(world).sca(.4).top().ord(3);
-        const cactus2 = frame.asset('cactus2.png').pos(320,300).addTo(world).sca(.4).top().ord(3);
-        const cactus3 = cactus1.clone().pos(120,200).addTo(world).sca(-.2,.2).top().ord(3);
-        const skull1 = frame.asset('skull1.png').pos(100,450).addTo(world).sca(.5).top().ord(3);
-        const skull2 = frame.asset('skull4.png').pos(350,400).addTo(world).sca(-.5,.5).top().ord(3);
-        const bone1 = frame.asset('bone1.png').pos(220,450).addTo(world).sca(.4).top().ord(3).rot(60);
-        const bone2 = frame.asset('bone2.png').pos(300,600).addTo(world).sca(.4,-.4).top().ord(3);
+    var c = new Circle(15, red).center().drag();
 
+    // var label = new Label().center().sca(.5).mov(0,100);
+    frame.on("deviceorientation", function (e) {
+        // label.text = "x:" + Math.round(e.rotation.x) +", y: "+  Math.round(e.rotation.y) +", z: "+  Math.round(e.rotation.z);
+        c.loc(stageH/2+e.rotation.y*2,stageW/2+e.rotation.x*-2);
+        stage.update();
+    });
 
-      frame.on("resize", () => {
-        stageW = frame.width;
-        stageH = frame.height;
-        world.scaleTo(stage).centerReg().pos(0,0,CENTER,BOTTOM);
-      });
+    Ticker.add(function(){
+      if(cactus1.hitTestCircle(c) || cactus2.hitTestCircle(c) || skull1.hitTestCircle(c) || skull2.hitTestCircle(c) || bone1.hitTestCircle(c) || bone2.hitTestCircle(c) || cactus3.hitTestCircle(c)){
+        c.removeFrom();
+      };
+      if(crown.hitTestCircle(c)){
+        crown.removeFrom();
+        scorer.score+=1500;
+      }
+      if(money.hitTestCircle(c)){
+          money.removeFrom();
+          scorer.score+=1500;
+      }
+      if(necklace.hitTestCircle(c)){
+          necklace.removeFrom();
+          scorer.score+=1000;
+      }
+      if(coin1.hitTestCircle(c)){
+          coin1.removeFrom();
+          scorer.score+=200;
+      }
+      if(coin2.hitTestCircle(c)){
+          coin2.removeFrom();
+          scorer.score+=200;
+      }
+      if(coin3.hitTestCircle(c)){
+          coin3.removeFrom();
+          scorer.score+=200;
+      }
+      if(coin4.hitTestCircle(c)){
+          coin4.removeFrom();
+          scorer.score+=200;
+      }
+      if(coin5.hitTestCircle(c)){
+          coin5.removeFrom();
+          scorer.score+=200;
+      }
+    });
+
+    const restart = new Button({backgroundColor: red,
+      rollBackgroundColor: red,
+      label: "RESTART",
+      color: white
+    })
+      .sca(.5)
+      .loc(400,10, world);
+
+    restart.tap(function(){
+      location.reload();
+    });
+
+    // Score
+    new Label({
+        text: "Score:",
+        lineHeight: 50,
+        align: "center",
+        size: 30,
+        color: white,
+    }).loc(90,40, topbar);
+
+    const scorer = new Scorer({
+        backgroundColor:red,
+        color:white,
+        align:"left"
+    }).loc(200,70, topbar);
+
+    frame.on("resize", () => {
+      stageW = frame.width;
+      stageH = frame.height;
+      world.scaleTo(stage, 90, 90).centerReg().pos(0,0,CENTER,BOTTOM);
+      backing.siz(stageW,stageH).pos(0,0,TOP,LEFT);
+    });
 
     stage.update(); // this is needed to show any changes
 
