@@ -8,7 +8,7 @@
 <!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS https://createjs.com -->
 <!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner   -->
 <!-- ZIM is free to use. You can donate to help improve ZIM at https://zimjs.com/donate  -->
-
+<link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet">
 <script src="https://zimjs.org/cdn/1.2.4/createjs.js"></script>
 <script src="https://zimjs.org/cdn/10.8.0/zim.js"></script>
 <!-- use zimjs.com/distill for minified individual functions! -->
@@ -30,9 +30,9 @@
 const scaling = "full"; // this will resize to fit inside the screen dimensions
 const width = null;
 const height = null;
-const color = black; // ZIM colors like green, blue, pink, faint, clear, etc.
+const color = "#00EBFF"; // ZIM colors like green, blue, pink, faint, clear, etc.
 const outerColor = dark; // any HTML colors like "violet", "#333", etc. are fine to use
-const assets = ['cactus1.png', 'cactus2.png', 'ground.png', 'skull1.png', 'skull2.png', 'skull4.png', 'bone1.png', 'bone2.png', 'background.png', 'coin1.png', 'coin2.png', 'coin3.png', 'coin4.png', 'coin5.png', 'crown.png', 'money.png', 'necklace.png'];
+const assets = ['cactus1.png', 'cactus2.png', 'ground.png', 'skull1.png', 'skull2.png', 'skull4.png', 'bone1.png', 'bone2.png', 'background1.png', 'coin1.png', 'coin2.png', 'coin3.png', 'coin4.png', 'coin5.png', 'crown.png', 'money.png', 'necklace.png', 'taco.png', 'sombrero.png', 'tequila.png'];
 const path = 'assets/';
 // as of ZIM 5.5.0 you do not need to put zim before ZIM functions and classes
 const frame = new Frame({scaling, width, height, color, outerColor, assets, path, sensors:true});
@@ -49,18 +49,20 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
 
     // put your code here (you can delete this sample code)
     const page1 = new Container(stageW,stageH);
-    page1.backing = new Rectangle(page1.width, page1.height, dark).addTo(page1);
-
+    page1.backing = new Rectangle(page1.width, page1.height, "#00EBFF").addTo(page1);
+    const background = asset('background1.png').loc(0,0,page1).sca(.4)
 
     new Label({
         text: "Play Game",
         lineHeight: 50,
         align: "center",
-        size: 30,
-        color: white,
-    }).loc(90,40, page1);
+        font: "Permanent Marker",
+        size: 40,
+        color: "#FF40D3",
+    }).loc(100,70)
+    .addTo(page1);
 
-    page1.triangle = new Triangle(60,60,60,white)
+    page1.triangle = new Triangle(60,60,60,"#FF40D3")
         .rot(90)
         // .hov(1)
         // .rot(90)
@@ -75,7 +77,7 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
 
     const page2 = new Container(stageW,stageH);
 
-    page2.backing = new Rectangle(page2.width, page2.height, "#68CDFF").addTo(page2);
+    page2.backing = new Rectangle(page2.width, page2.height, "#00EBFF").addTo(page2);
 
     const world = new Container(page2.stageW,page2.stageH).center(page2);
 
@@ -106,7 +108,7 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
         .ord(top)
         .sca(3);
 
-    const topbar = new Rectangle(stageW, 60, red).loc(0,0, page2);
+    const topbar = new Rectangle(stageW, 60, "#00EBFF").loc(0,0, page2);
     const coin1 = asset('coin1.png').loc(-400,-1050,world).sca(.5);
     const crown = asset('crown.png').loc(250,-100,world).sca(2);
     const money = asset('money.png').loc(-510,450,world);
@@ -117,11 +119,16 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
     const necklace = asset('necklace.png').loc(500,500,world).sca(2);
     const cactus1 = asset('cactus1.png').loc(-410,-200,world).sca(2);
     const cactus2 = asset('cactus2.png').loc(340,-300,world).sca(1.5);
-    const cactus3 = cactus1.clone().loc(-120,-800,world).sca(-.7,.7);
+    const cactus3 = cactus1.clone().loc(-120,-600,world).sca(-.7,.7);
     const skull1 = asset('skull1.png').loc(-210,300,world).sca(1.8);
     const skull2 = asset('skull4.png').loc(600,0,world).sca(-2,2);
     const bone1 = asset('bone1.png').loc(320,500,world).rot(60);
     const bone2 = asset('bone2.png').loc(450,250,world).sca(1,-1);
+    const taco  = asset('taco.png').loc(200,-850,world).sca(.3);
+    const taco2  = taco.clone().loc(-200,-850,world).sca(.3);
+    const taco3  = taco.clone().loc(0,-850,world).sca(.3);
+    const sombrero = asset('sombrero.png').loc(-450,-400,world).sca(.5);
+    const tequila  = asset('tequila.png').rot(40).loc(450,-750,world).sca(.5);
 
     var c = new Circle(15, black).center(page2).drag();
 
@@ -131,6 +138,25 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
         c.loc(stageH/2+e.rotation.y*2,stageW/2+e.rotation.x*-2);
         stage.update();
     });
+
+    const win = new Rectangle(stageW,stageH, "none").center(world).alp(0);
+
+    new Label({
+      text: "You Win!",
+        lineHeight: 50,
+        align: "center",
+        size: 200,
+        color: "#FF40D3",
+        font: 'Permanent Marker'
+    }).loc(200,100, win);
+
+
+    Ticker.add(function(){
+      if (scorer.score == 10000){
+        zog("you win");
+        win.alp(1);
+    }
+  }, true);
 
     Ticker.add(function(){
       if(cactus1.hitTestCircle(c) || cactus2.hitTestCircle(c) || skull1.hitTestCircle(c) || skull2.hitTestCircle(c) || bone1.hitTestCircle(c) || bone2.hitTestCircle(c) || cactus3.hitTestCircle(c)){
@@ -168,15 +194,36 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
           coin5.removeFrom();
           scorer.score+=200;
       }
+      if(taco.hitTestCircle(c)){
+          taco.removeFrom();
+          scorer.score+=1000;
+      }
+      if(taco2.hitTestCircle(c)){
+          taco2.removeFrom();
+          scorer.score+=1000;
+      }
+      if(taco3.hitTestCircle(c)){
+          taco3.removeFrom();
+          scorer.score+=1000;
+      }
+      if(sombrero.hitTestCircle(c)){
+          sombrero.removeFrom();
+          scorer.score+=1000;
+      }
+      if(tequila.hitTestCircle(c)){
+          tequila.removeFrom();
+          scorer.score+=1000;
+      }
     });
 
-    const restart = new Button({backgroundColor: red,
-      rollBackgroundColor: red,
+    const restart = new Button({
+      backgroundColor: "#FF40D3",
+      rollBackgroundColor: "#FF40D3",
       label: "RESTART",
       color: white
     })
       .sca(.5)
-      .loc(10,80, page2);
+      .loc(250,80, page2);
 
     restart.tap(function(){
       location.reload();
@@ -192,20 +239,21 @@ frame.on("ready", () => { // ES6 Arrow Function - like function(){}
     }).loc(60,0, topbar);
 
     const scorer = new Scorer({
-        backgroundColor:red,
+        backgroundColor:"#00EBFF",
         color:white,
         align:"left",
     }).loc(160,30, topbar);
 
-const page3 = new Rectangle(stageW, stageH, "black");
+const page3 = new Rectangle(stageW, stageH, "#FF40D3");
 
 new Label({
-  text: "How to Play! \n Move the ghost by tilting your phone \n Pick up the treasure to get points \n But don't touch the cactus or bones!",
+  text: "How to Play! \n Move by tilting your phone \n Pick up the fun stuff \n (treasure, tacos, tequila, & sombrero \n to get points \n Don't touch the cactus\n or bones!",
     lineHeight: 50,
     align: "center",
     size: 20,
     color: white,
-}).loc(200,200, page3);
+    font: 'Permanent Marker'
+}).loc(200,100, page3);
 
     const pages = new Pages([
       {page:page1, swipe:[page1,page2,null,null]},
