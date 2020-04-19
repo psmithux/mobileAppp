@@ -2,45 +2,88 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Pad's Game</title>
-<!-- Welcome to ZIM at http://zimjs.com - Code Interactive Media Pizzazz!             -->
-<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS http://createjs.com -->
-<!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner     -->
-<!-- ZIM is free to use. You can donate to help improve ZIM at http://zimjs.com/donate     -->
-<script src="https://zimjs.org/cdn/1.3.0/createjs.js"></script>
-<script src="https://zimjs.org/cdn/10.9.0/zim.js"></script>
+<title>final4</title>
+
+<!-- Welcome to ZIM at https://zimjs.com - Code Creativity!                              -->
+<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS https://createjs.com -->
+<!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner   -->
+<!-- ZIM is free to use. You can donate to help improve ZIM at https://zimjs.com/donate  -->
+
+<script src="https://zimjs.org/cdn/1.2.4/createjs.js"></script>
+<script src="https://zimjs.org/cdn/10.8.0/zim.js"></script>
 <!-- use zimjs.com/distill for minified individual functions! -->
-<!-- import Box2D and ZIM Physics helper -->
+
 <script src="https://zimjs.org/cdn/Box2dWeb-2.1.a.3.min.js"></script>
 <script src="https://zimjs.org/cdn/physics_2.0.js"></script>
 <script src="https://zimjs.com/ten/header.js"></script>
 <script src="https://zimjs.org/cdn/game_2.2.js"></script>
-<!-- use zimjs.com/distill for minified individual functions! -->
+
 <script>
+
 // SCALING OPTIONS
 // scaling can have values as follows with full being the default
-// "fit"    sets canvas and stage to dimensions and scales to fit inside window size
-// "outside"    sets canvas and stage to dimensions and scales to fit outside window size
-// "full"    sets stage to window size with no scaling
-// "tagID"    add canvas to HTML tag of ID - set to dimensions if provided - no scaling
+// "fit"	sets canvas and stage to dimensions and scales to fit inside window size
+// "outside"	sets canvas and stage to dimensions and scales to fit outside window size
+// "full"	sets stage to window size with no scaling
+// "tagID"	add canvas to HTML tag of ID - set to dimensions if provided - no scaling
+
 const scaling = "full"; // this will resize to fit inside the screen dimensions
-const width = 1024;
-const height = 768;
-const color = '#66ffff'; // ZIM colors like green, blue, pink, faint, clear, etc.
+const width = null;
+const height = null;
+const color = black; // ZIM colors like green, blue, pink, faint, clear, etc.
 const outerColor = dark; // any HTML colors like "violet", "#333", etc. are fine to use
 const assets = ['cactus1.png', 'cactus2.png', 'ground.png', 'skull1.png', 'skull2.png', 'skull4.png', 'bone1.png', 'bone2.png', 'background.png', 'coin1.png', 'coin2.png', 'coin3.png', 'coin4.png', 'coin5.png', 'crown.png', 'money.png', 'necklace.png'];
 const path = 'assets/';
 // as of ZIM 5.5.0 you do not need to put zim before ZIM functions and classes
 const frame = new Frame({scaling, width, height, color, outerColor, assets, path, sensors:true});
-frame.on("ready", function() {
+frame.on("ready", () => { // ES6 Arrow Function - like function(){}
     zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
+
     const stage = frame.stage;
     let stageW = frame.width;
     let stageH = frame.height;
 
-    const backing = new Rectangle(stageW, stageH, new GradientColor(['#00EBFF','#FFFFFF'], [0,1], 0,0, 0,500)).addTo();
+    // see https://zimjs.com/learn.html for video and code tutorials
+    // see https://zimjs.com/docs.html for documentation
+    // see https://zimjs.com/bits.html for 64 Interactive Media techniques
 
-    const world = new Container(stageW,stageH).center();
+    // put your code here (you can delete this sample code)
+    const page1 = new Container(stageW,stageH);
+    page1.backing = new Rectangle(page1.width, page1.height, dark).addTo(page1);
+
+    // Score
+    new Label({
+        text: "Play Game",
+        lineHeight: 50,
+        align: "center",
+        size: 30,
+        color: white,
+    }).loc(90,40, page1);
+
+    page1.triangle = new Triangle(60,60,60,white)
+        .rot(90)
+        // .hov(1)
+        // .rot(90)
+        .loc(400,400)
+        .addTo(page1)
+        .outline();
+
+    page1.triangle.on("mousedown", () => {
+        // pages.go(page2, "right", "slide", 1000);
+        pages.go(page2, "right");
+    });
+
+    const page2 = new Container(stageW,stageH);
+
+    page2.backing = new Rectangle(page2.width, page2.height, "#68CDFF").addTo(page2);
+
+    const world = new Container(page2.stageW,page2.stageH).center(page2);
+
+    // page2.triangle = new Triangle(160,160,160,dark)
+    //     .alp(.8)
+    //     .hov(1)
+    //     .rot(-90)
+    //     .loc(10,500, world);
 
     var ground = new Blob({
         points: [[163.9,-99.2,0,0,-22.4,0,50,0,"mirror"],[186.8,121.5,0,0,0,-50,0,50,"mirror"],[-160.6,150.6,0,0,50,0,-50,0,"mirror"],[-183.9,-71.1,0,0,0,50,0,-27.6,"mirror"],[2,-73.3,0,0,-89.8,-0.5,72.7,0.4]],
@@ -49,9 +92,9 @@ frame.on("ready", function() {
         })
         // .sca(3)
         .addTo(world)
-        .pos(0,100,CENTER,BOTTOM)
+        .pos(0,300,CENTER,BOTTOM)
         .ord(top)
-        .sca(2);
+        .sca(4);
 
     new Blob({
         points: [[163.9,-99.2,0,0,-22.4,0,50,0,"mirror"],[186.8,121.5,0,0,0,-50,0,50,"mirror"],[-160.6,150.6,0,0,50,0,-50,0,"mirror"],[-183.9,-71.1,0,0,0,50,0,-27.6,"mirror"],[2,-73.3,0,0,-89.8,-0.5,72.7,0.4]],
@@ -60,11 +103,11 @@ frame.on("ready", function() {
         })
         // .sca(3)
         .addTo(ground)
-        .pos(0,0,CENTER,BOTTOM)
+        .pos(0,-100,CENTER,BOTTOM)
         .ord(top)
-        .sca(2);
+        .sca(3);
 
-    const topbar = new Rectangle(stageW+200, 100, red).loc(-50,-100, world);
+    const topbar = new Rectangle(stageW+200, 100, red).loc(0,-500, world);
     const coin1 = asset('coin1.png').loc(0,50,world).sca(.2);
     const crown = asset('crown.png').loc(300,450,world).sca(.6);
     const money = asset('money.png').loc(10,550,world).sca(.2);
@@ -81,13 +124,7 @@ frame.on("ready", function() {
     const bone1 = asset('bone1.png').loc(220,500,world).sca(.4).rot(60);
     const bone2 = asset('bone2.png').loc(350,550,world).sca(.4,-.4);
 
-    // const scorer = new Scorer({
-    //     backgroundColor:green,
-    //     color:white,
-    //     align:"left"
-    // })..addTo();
-
-    var c = new Circle(15, red).center().drag();
+    var c = new Circle(15, black).center(page2).drag();
 
     // var label = new Label().center().sca(.5).mov(0,100);
     frame.on("deviceorientation", function (e) {
@@ -140,7 +177,7 @@ frame.on("ready", function() {
       color: white
     })
       .sca(.5)
-      .loc(400,10, world);
+      .loc(400,-380, world);
 
     restart.tap(function(){
       location.reload();
@@ -158,23 +195,52 @@ frame.on("ready", function() {
     const scorer = new Scorer({
         backgroundColor:red,
         color:white,
-        align:"left"
+        align:"left",
     }).loc(200,70, topbar);
 
-    frame.on("resize", () => {
-      stageW = frame.width;
-      stageH = frame.height;
-      world.scaleTo(stage, 90, 90).centerReg().pos(0,0,CENTER,BOTTOM);
-      backing.siz(stageW,stageH).pos(0,0,TOP,LEFT);
+    const pages = new Pages([
+        {page:page1, swipe:[page2, page2, "help", "help"]},
+        {page:page2, swipe:[page1, page1, "help", "help"]}
+    ], "slide", 700).addTo();
+
+    pages.on("help", () => {
+        if (pages.page == page2) {
+            zogg("helping");
+        } else {
+            zogr("helping");
+        }
     });
+
+    frame.on("resize", () => {
+        stageW = frame.width;
+        stageH = frame.height;
+
+        page1.setBounds(stageW, stageH);
+        page1.backing.siz(stageW, stageH);
+        // page1.triangle.loc(stageW*.3, stageH*.3);
+        page1.triangle.center();
+
+        page2.setBounds(stageW, stageH);
+        page2.backing.siz(stageW, stageH);
+        // page2.triangle.center();
+
+        world.scaleTo(stage, 90, 90).centerReg().pos(0,0,CENTER,BOTTOM);
+        backing.siz(stageW,stageH).pos(0,0,TOP,LEFT);
+
+        pages.resize();
+    })
+
 
     stage.update(); // this is needed to show any changes
 
 }); // end of ready
 
 </script>
+
 <meta name="viewport" content="width=device-width, user-scalable=no" />
+
 </head>
+
 <body>
 <!-- canvas with id="myCanvas" is made by zim Frame -->
 </body>
